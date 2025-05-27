@@ -33,6 +33,9 @@ const CountdownTimer = ({ targetDate }: CountdownTimerProps) => {
         };
       }
       
+      // Redirect when countdown reaches zero
+      window.location.href = 'https://reloadweb.netlify.app/';
+      
       return {
         days: 0,
         hours: 0,
