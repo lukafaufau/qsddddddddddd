@@ -19,6 +19,7 @@ const CountdownTimer = ({ targetDate }: CountdownTimerProps) => {
     minutes: 0,
     seconds: 0
   });
+  const [hasRedirected, setHasRedirected] = useState(false);
 
   useEffect(() => {
     const calculateTimeLeft = () => {
@@ -33,8 +34,12 @@ const CountdownTimer = ({ targetDate }: CountdownTimerProps) => {
         };
       }
       
-      // Redirect when countdown reaches zero
-      window.location.href = 'https://reloadweb.netlify.app/';
+      // Only redirect once when countdown reaches zero
+      if (!hasRedirected) {
+        setHasRedirected(true);
+        localStorage.removeItem('countdownTarget'); // Clear stored date
+        window.location.href = 'https://reloadweb.netlify.app/';
+      }
       
       return {
         days: 0,
@@ -54,7 +59,7 @@ const CountdownTimer = ({ targetDate }: CountdownTimerProps) => {
 
     // Clear interval on unmount
     return () => clearInterval(timer);
-  }, [targetDate]);
+  }, [targetDate, hasRedirected]);
 
   // Helper function to add leading zero
   const formatNumber = (num: number): string => {
